@@ -1,0 +1,82 @@
+\begin{frame}{A simple problem in set theory}
+  Prove that set union is commutative
+  \[
+  \forall a \; b,\; a \cup b = b \cup a
+  \]
+
+  The following two axioms are used in the proof
+  \begin{itemize}
+  \item Definition of union
+    \[
+    \forall a \; b\; e,\; e \in a \cup b \leftrightarrow e \in a \lor e \in b
+    \]
+  \item Extensionality
+    \[
+    \forall a \; b,\; (\forall e,\; e \in a \leftrightarrow e \in b) \rightarrow a = b
+    \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \[
+  \begin{array}{rc}
+    & \forall a \; b,\; (\forall e,\; e \in a \leftrightarrow e \in b) \rightarrow a = b \\
+    & \\
+    \uncover<2->{\equiv & \{ \text{skolemization} \}} \\
+    & \\
+    & \uncover<2->{(sk(x, y) \in x \not\leftrightarrow sk(x, y) \in y) \lor x = y} \\
+    & \\
+    \uncover<3->{\equiv & \{ \text{CNF transformation} \}} \\
+    & \\
+    \uncover<3->{& sk(x, y) \in x \lor sk(x, y) \in y \lor x = y} \\
+    & \uncover<3->{\land} \\
+    & \uncover<3->{sk(x, y) \not\in x \lor sk(x, y) \not\in y \lor x = y}
+  \end{array}
+  \]
+\end{frame}
+
+\begin{frame}{Selection on extensionality clauses}
+  \[
+  sk(x, y) \not\in x \lor sk(x, y) \not\in y \lor x = y
+  \]
+
+  The literal $x = y$ is
+  \begin{itemize}
+  \item positive
+  \item always the smallest literal 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  We want to use the goal for superposition
+  \begin{prooftree}
+    \AxiomC{$A \lor \underline{x = y}$}
+    \AxiomC{$\underline{s \neq t}$}
+    \BinaryInfC{$A\theta$}
+  \end{prooftree}
+  But instead we can only superpose
+  \begin{prooftree}
+    \AxiomC{$\underline{A} \lor x = y$}
+    \AxiomC{$\underline{\neg A'} \lor B$}
+    \BinaryInfC{$(x = y \lor B)\theta$}
+  \end{prooftree}
+\end{frame}
+
+\begin{frame}{Selection directs the search}
+  \begin{block}{Forward reasoning}
+    $a + b = a \rightarrow b = 0$
+  \end{block}
+
+  \begin{block}{Backward reasoning}
+    $\exists m, 2m + 1 = n \rightarrow odd(n)$
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  Should we simply force the selection of $x = y$?
+    \begin{prooftree}
+      \AxiomC{$\underline{x = y} \lor sk(x, y) \not\in x \lor sk(x, y) \not\in y$}
+      \AxiomC{$\underline{e \not\in a \cup b} \lor e \in a \lor e \in b$}
+      \BinaryInfC{$sk(a \cup b, z) \not\in a \cup b \lor sk(a \cup b, y) \not\in y \lor e \in a \lor e \in b$}
+    \end{prooftree}
+\end{frame}
