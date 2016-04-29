@@ -17,16 +17,16 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{A closer look at the extensionality axiom}
   \[
   \begin{array}{rc}
     & \forall a \; b,\; (\forall e,\; e \in a \leftrightarrow e \in b) \rightarrow a = b \\
     & \\
-    \uncover<2->{\equiv & \{ \text{skolemization} \}} \\
+    \uncover<2->{\textcolor{gray}{\equiv} & \textcolor{gray}{\text{\{ skolemization \}}}} \\
     & \\
     & \uncover<2->{(sk(x, y) \in x \not\leftrightarrow sk(x, y) \in y) \lor x = y} \\
     & \\
-    \uncover<3->{\equiv & \{ \text{CNF transformation} \}} \\
+    \uncover<3->{\textcolor{gray}{\equiv} & \textcolor{gray}{\text{\{ CNF transformation \}}}} \\
     & \\
     \uncover<3->{& sk(x, y) \in x \lor sk(x, y) \in y \lor x = y} \\
     & \uncover<3->{\land} \\
@@ -47,7 +47,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Direction of search}
   We want to use the goal for superposition
   \begin{prooftree}
     \AxiomC{$A \lor \underline{x = y}$}
@@ -62,21 +62,17 @@
   \end{prooftree}
 \end{frame}
 
-\begin{frame}{Selection directs the search}
-  \begin{block}{Forward reasoning}
-    $a + b = a \rightarrow b = 0$
-  \end{block}
-
-  \begin{block}{Backward reasoning}
-    $\exists m, 2m + 1 = n \rightarrow odd(n)$
-  \end{block}
-\end{frame}
-
-\begin{frame}
-  Should we simply force the selection of $x = y$?
+\begin{frame}{Solutions?}
+  \begin{itemize}
+  \item Select only $x = y$? Loss of completeness
+  \item Select it in addition to other literals
+  \end{itemize}
+  
+  {\footnotesize
     \begin{prooftree}
       \AxiomC{$\underline{x = y} \lor sk(x, y) \not\in x \lor sk(x, y) \not\in y$}
-      \AxiomC{$\underline{e \not\in a \cup b} \lor e \in a \lor e \in b$}
-      \BinaryInfC{$sk(a \cup b, z) \not\in a \cup b \lor sk(a \cup b, y) \not\in y \lor e \in a \lor e \in b$}
+      \AxiomC{$\underline{e \not\in x \cup y} \lor e \in x \lor e \in y$}
+      \BinaryInfC{$sk(x \cup y, z) \not\in x \cup y \lor sk(x \cup y, z) \not\in z \lor e \not\in x \cup y \lor e \in x \lor e \in y$}
     \end{prooftree}
+  }
 \end{frame}
