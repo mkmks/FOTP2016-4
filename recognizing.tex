@@ -2,8 +2,8 @@
   \begin{block}{How common are these clauses?}
     \begin{itemize}
     \item In the TPTP library (14k problems)
-    \item 6000 formulas that may result in positive equalities between
-      variables
+    \item 6000 different formulas that may result in positive
+      equalities between variables
     \end{itemize}
   \end{block}
 \end{frame}
@@ -26,7 +26,7 @@
   \end{block}
   
   \begin{block}{Solution}
-    Exclude clauses with a disequality of the same sort as $x = y$
+    No clauses with a disequality of the same sort as $x = y$
   \end{block}
 \end{frame}
 
@@ -38,13 +38,12 @@
   \end{block}
 
   \begin{block}{Solution}
-    Exclude clauses with an equality other than the one among
-    variables
+    No clauses with an equality other than the one among variables
   \end{block}
 \end{frame}
 
 \begin{frame}{Things that look like extensionality\dots}
-  \begin{block}{Axiomatization of arrays}
+  \begin{block}{Very long clauses}
     {\scriptsize
     \begin{gather*}
     x_4 = x_6 \lor ssSkC0 \lor \neg in(x_6 , x_7 ) \lor \neg front(x_7
@@ -63,6 +62,13 @@
   \end{block}
 
   \begin{block}{Solution}
-    Limit the number of clause in extensionality clause
+    Limit the number of literals in extensionality clauses
   \end{block}
+\end{frame}
+
+\begin{frame}{Options to control ext\_rec}
+  \begin{itemize}
+  \item known: only applies to known set and array extensionality axioms
+  \item all: applies the heuristics
+  \end{itemize}
 \end{frame}

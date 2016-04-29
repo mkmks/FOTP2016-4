@@ -48,18 +48,33 @@
 \end{frame}
 
 \begin{frame}{Direction of search}
-  We want to use the goal for superposition
+  We want to superpose with the goal (\emph{backward reasoning})
   \begin{prooftree}
     \AxiomC{$A \lor \underline{x = y}$}
     \AxiomC{$\underline{s \neq t}$}
     \BinaryInfC{$A\theta$}
   \end{prooftree}
-  But instead we can only superpose
-  \begin{prooftree}
-    \AxiomC{$\underline{A} \lor x = y$}
-    \AxiomC{$\underline{\neg A'} \lor B$}
-    \BinaryInfC{$(x = y \lor B)\theta$}
-  \end{prooftree}
+
+  \uncover<2->{
+    But instead we can only use resolution (\emph{forward reasoning})
+    \begin{prooftree}
+      \AxiomC{$\underline{A} \lor x = y$}
+      \AxiomC{$\underline{\neg A'} \lor B$}
+      \BinaryInfC{$(x = y \lor B)\theta$}
+    \end{prooftree}
+
+    \begin{tikzpicture}[remember picture, overlay]
+      \node  at (current page.center)
+             {%
+               \begin{tikzpicture}[remember picture, overlay]
+                 \filldraw[red, very thick]
+                 (-50pt, 0pt) -- (60pt, 40pt);
+                 \filldraw[red, very thick]
+                 (60pt, 0pt) -- (-50pt, 40pt);
+               \end{tikzpicture}
+             };
+    \end{tikzpicture}
+  }
 \end{frame}
 
 \begin{frame}{Solutions?}
