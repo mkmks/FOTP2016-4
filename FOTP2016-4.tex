@@ -6,7 +6,16 @@
 \usepackage{xcolor}
 \usepackage{minted}
 \usepackage{graphicx}
+\usepackage{amssymb}
 \usepackage{bussproofs}
+
+\usetikzlibrary{shapes.geometric,arrows}
+
+\tikzstyle{startstop} = [rectangle, rounded corners, text centered, draw=black]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, text centered, draw=black]
+\tikzstyle{process} = [rectangle, text centered, draw=black]
+\tikzstyle{decision} = [diamond, aspect=2, text centered, draw=black]
+\tikzstyle{arrow} = [thick,->,>=stealth]
 
 \title{Extensional crisis and proving identity}
 
@@ -25,6 +34,9 @@
 
 \section{Motivating examples}
 \input{examples}
+
+\section{Extensionality resolution}
+\input{resolution}
 
 \section{Recognizing extensionality axioms}
 \input{recognizing}

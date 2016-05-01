@@ -1,0 +1,148 @@
+\begin{frame}{Extensionality resolution rule}
+  \begin{prooftree}
+    \AxiomC{$x = y \lor C$}
+    \AxiomC{$s \neq t \lor D$}
+    \BinaryInfC{$C \theta \lor D$}
+  \end{prooftree}
+
+  where
+
+  \begin{itemize}
+  \item $ext\_rec(x = y \lor C) = (x = y)$
+    
+    \begin{itemize}
+    \item $ext\_rec$ is undefined for clauses without equalities
+    \item $ext\_rec$ is defined for \emph{extensionality clauses}
+    \end{itemize}
+    
+  \item $s \neq t$ is selected in $s \neq t \lor D$
+  \item $\theta = \{ x \mapsto s, y \mapsto t \}$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Soundness of extensionality resolution}
+  \begin{prooftree}
+    \AxiomC{$\neg C \to x = y$}
+    \AxiomC{$s = t \to D$}
+    \BinaryInfC{$\neg {C \theta} \to D$}
+  \end{prooftree}
+\end{frame}
+
+
+\begin{frame}{Otter saturation algorithm}
+  \begin{tikzpicture}[node distance=100, scale=0.4, every node/.style={transform shape}]
+    \node (input) [startstop, align=left] {$active, passive, unprocessed$ \\ $given, new$};
+
+    \node (nounprocessed) [decision, below of=input] {$unprocessed \neq \varnothing$};
+    \node (newemptyclause) [decision, below of=nounprocessed] {$new = \square$};
+    \node (retainednew) [decision, below of=newemptyclause] {$retained(new)$};
+    \node (unsat) [startstop, right of=newemptyclause] {UNSAT};
+
+    \coordinate[left of=newemptyclause]  (1);
+    \coordinate[right of=unsat] (2);
+
+    \node (forwardsimplification) [process, right of=2] {forward simplification};
+    \node (newemptyclause2) [decision, below of=forwardsimplification] {$new = \square$};
+    \node (retainednew2) [decision, below of=newemptyclause2] {$retained(new)$};
+    \node (unsat2) [startstop, right of=newemptyclause2] {UNSAT};
+    \node (backwardsimplification) [process, below of=retainednew] {backward simplification};
+
+    \node (forwardinference) [process, right of=unsat2, align=center] {forward \\ generating \\ inferences};
+    \node (backwardinference) [process, below of=forwardinference, align=center] {backward \\ generating \\ inferences};
+    \node (clauseselection) [process, above of=forwardinference] {clause selection};
+    \node (nopassive) [decision, above of=clauseselection] {$passive = \varnothing$};
+    \node (sat) [startstop, above of=nopassive] {$SAT$};
+
+    \coordinate[below of=retainednew2] (3);
+
+    \draw [arrow] (input) -- (nounprocessed);
+    \draw [arrow] (nounprocessed) -- node [right] {yes} (newemptyclause);
+    \draw [arrow] (newemptyclause) -- node [right] {no} (retainednew);
+    \draw [arrow] (newemptyclause) -- node [near start, above] {yes} (unsat);
+    \draw [arrow] (retainednew) -| node [near start, above] {no} (1) |- (nounprocessed);
+    \draw [arrow] (retainednew) -| node [near start, above] {yes} (2) -- (forwardsimplification);
+    \draw [arrow] (forwardsimplification) -- (newemptyclause2);
+    \draw [arrow] (newemptyclause2) -- node [right] {no} (retainednew2);
+    \draw [arrow] (newemptyclause2) -- node [near start, above] {yes} (unsat2);
+    \draw [arrow] (retainednew2) -- node [right] {no} (3) -| (1) |- (nounprocessed);
+    \draw [arrow] (retainednew2) -- node [midway, above] {yes} (backwardsimplification);
+    \draw [arrow] (backwardsimplification) -| (1) |- (nounprocessed);
+
+    \draw [arrow] (nounprocessed) -- node [midway, above] {no} (nopassive);
+    \draw [arrow] (nopassive) -- node [right] {no} (clauseselection);
+    \draw [arrow] (nopassive) -- node [right] {yes} (sat);
+    \draw [arrow] (clauseselection) -- (forwardinference);
+    \draw [arrow] (forwardinference) -- (backwardinference);
+    \draw [arrow] (backwardinference) |- (3) -| (1) |- (nounprocessed);
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{...with extensionality resolution}
+  \begin{tikzpicture}[node distance=100, scale=0.35, every node/.style={transform shape}]
+    \node (input) [startstop, align=left] {$active, passive, unprocessed$ \\ $given, new$ \\ \textcolor{blue}{$neg\_equal, ext$}};
+
+    \node (nounprocessed) [decision, below of=input] {$unprocessed \neq \varnothing$};
+    \node (newemptyclause) [decision, below of=nounprocessed] {$new = \square$};
+    \node (retainednew) [decision, below of=newemptyclause] {$retained(new)$};
+    \node (unsat) [startstop, right of=newemptyclause] {UNSAT};
+
+    \coordinate[left of=newemptyclause]  (1);
+    \coordinate[right of=unsat] (2);
+
+    \node (forwardsimplification) [process, right of=2] {forward simplification};
+    \node (newemptyclause2) [decision, below of=forwardsimplification] {$new = \square$};
+    \node (retainednew2) [decision, below of=newemptyclause2] {$retained(new)$};
+    \node (unsat2) [startstop, right of=newemptyclause2] {UNSAT};
+    \node (backwardsimplification) [process, below of=retainednew] {backward simplification};
+
+    \node (forwardinfer) [process, right of=unsat2, align=center] {forward \\ generating \\ inferences};
+
+    \coordinate[right of=forwardinfer] (3);
+
+    \node (negequal) [decision, right of=3, fill=yellow] {$given$ has $\neq$};
+
+    \coordinate[right of=negequal] (4);
+
+    \node (inferext) [process, below of=4, fill=yellow] {infer from $given$, \textcolor{blue}{$ext$}};
+    \node (backwardinfer) [process, below of=forwardinfer, align=center] {backward \\ generating \\ inferences};
+    \node (ext) [decision, below of=backwardinfer,fill=yellow] {\textcolor{blue}{$ext\_rec$}$(given)$};
+
+    \coordinate[right of=ext] (5);
+
+    \node (inferneg) [process, right of=5, fill=yellow] {infer from $given$, \textcolor{blue}{$neg\_equal$}};
+
+    \node (clauseselection) [process, above of=forwardinfer] {clause selection};
+    \node (nopassive) [decision, above of=clauseselection] {$passive = \varnothing$};
+    \node (sat) [startstop, above of=nopassive] {$SAT$};
+
+    \coordinate[below of=retainednew2] (6);
+    \coordinate[below of=6] (7);
+
+    \draw [arrow] (input) -- (nounprocessed);
+    \draw [arrow] (nounprocessed) -- node [right] {yes} (newemptyclause);
+    \draw [arrow] (newemptyclause) -- node [right] {no} (retainednew);
+    \draw [arrow] (newemptyclause) -- node [near start, above] {yes} (unsat);
+    \draw [arrow] (retainednew) -| node [near start, above] {no} (1) |- (nounprocessed);
+    \draw [arrow] (retainednew) -| node [near start, above] {yes} (2) -- (forwardsimplification);
+    \draw [arrow] (forwardsimplification) -- (newemptyclause2);
+    \draw [arrow] (newemptyclause2) -- node [right] {no} (retainednew2);
+    \draw [arrow] (newemptyclause2) -- node [near start, above] {yes} (unsat2);
+    \draw [arrow] (retainednew2) -- node [right] {no} (6) -| (1) |- (nounprocessed);
+    \draw [arrow] (retainednew2) -- node [midway, above] {yes} (backwardsimplification);
+    \draw [arrow] (backwardsimplification) -| (1) |- (nounprocessed);
+
+    \draw [arrow] (nounprocessed) -- node [midway, above] {no} (nopassive);
+    \draw [arrow] (nopassive) -- node [right] {no} (clauseselection);
+    \draw [arrow] (nopassive) -- node [right] {yes} (sat);
+    \draw [arrow] (clauseselection) -- (forwardinfer);
+    \draw [arrow] (forwardinfer) -- (negequal);
+    \draw [arrow] (negequal) -| node [near start, above] {yes} (inferext);
+    \draw [arrow] (inferext) -- (backwardinfer);
+    \draw [arrow] (negequal) |- node [near start, right] {no} (backwardinfer);
+    \draw [arrow] (backwardinfer) -- (ext);
+
+    \draw [arrow] (ext) -| node [very near start, below] {no} (1) |- (nounprocessed);
+    \draw [arrow] (ext) -- node [near start, above] {yes} (inferneg);
+    \draw [arrow] (inferneg) |- (7) -| (1) |- (nounprocessed);
+  \end{tikzpicture} 
+\end{frame}
