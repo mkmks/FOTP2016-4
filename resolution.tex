@@ -26,8 +26,24 @@
     \AxiomC{$s = t \to D$}
     \BinaryInfC{$\neg {C \theta} \to D$}
   \end{prooftree}
+
+  \begin{itemize}
+  \item the rule replaces equalities between terms with~instances of extensionality premises
+  \item not every clause with equality between variables is an extensionality clause, $ext\_rec$ crucial
+  \end{itemize}
+
 \end{frame}
 
+
+\begin{frame}{Let's revisit the example}
+  Backward reasoning from the negated goal is an~instance~of~extensionality~resolution:
+
+  \begin{prooftree}
+    \AxiomC{$sk(x, y) \not \in x \lor sk(x, y) \not \in y \lor x = y$}
+    \AxiomC{$a \cup b \neq b \cup a$}
+    \BinaryInfC{$sk(a \cup b, b \cup a) \not \in a \cup b \lor sk(a \cup b, b \cup a) \not \in b \cup a$}
+  \end{prooftree}
+\end{frame}
 
 \begin{frame}{Otter saturation algorithm}
   \begin{tikzpicture}[node distance=100, scale=0.4, every node/.style={transform shape}]
