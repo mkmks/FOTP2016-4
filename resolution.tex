@@ -65,14 +65,14 @@
 
     \node (forwardinference) [process, right of=unsat2, align=center] {forward \\ generating \\ inferences};
     \node (backwardinference) [process, below of=forwardinference, align=center] {backward \\ generating \\ inferences};
-    \node (clauseselection) [process, above of=forwardinference] {clause selection};
+    \node (clauseselection) [process, above of=forwardinference] {$given = select(passive)$};
     \node (nopassive) [decision, above of=clauseselection] {$passive = \varnothing$};
     \node (sat) [startstop, above of=nopassive] {$SAT$};
 
     \coordinate[below of=retainednew2] (3);
 
     \draw [arrow] (input) -- (nounprocessed);
-    \draw [arrow] (nounprocessed) -- node [right] {yes} (newemptyclause);
+    \draw [arrow] (nounprocessed) -- node [right] {yes, $new = pop(unprocessed)$} (newemptyclause);
     \draw [arrow] (newemptyclause) -- node [right] {no} (retainednew);
     \draw [arrow] (newemptyclause) -- node [near start, above] {yes} (unsat);
     \draw [arrow] (retainednew) -| node [near start, above] {no} (1) |- (nounprocessed);
@@ -127,7 +127,8 @@
 
     \node (inferneg) [process, right of=5, fill=yellow] {infer from $given$, \textcolor{blue}{$neg\_equal$}};
 
-    \node (clauseselection) [process, above of=forwardinfer] {clause selection};
+    \node (clauseselection) [process, above of=forwardinfer] {$given = select(passive)$};
+%    \node (clauseselection) [process, above of=forwardinfer] {clause selection};
     \node (nopassive) [decision, above of=clauseselection] {$passive = \varnothing$};
     \node (sat) [startstop, above of=nopassive] {$SAT$};
 
@@ -135,7 +136,7 @@
     \coordinate[below of=6] (7);
 
     \draw [arrow] (input) -- (nounprocessed);
-    \draw [arrow] (nounprocessed) -- node [right] {yes} (newemptyclause);
+    \draw [arrow] (nounprocessed) -- node [right] {yes, $new = pop(unprocessed)$} (newemptyclause);
     \draw [arrow] (newemptyclause) -- node [right] {no} (retainednew);
     \draw [arrow] (newemptyclause) -- node [near start, above] {yes} (unsat);
     \draw [arrow] (retainednew) -| node [near start, above] {no} (1) |- (nounprocessed);
